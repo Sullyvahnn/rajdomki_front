@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import api from '../api/api';
-import { GroupInfo } from '../types';
+import api from '../../api/api';
+import { GroupInfo } from '../../types';
 
 const GroupInfoComponent = () => {
     const [group, setGroup] = useState<GroupInfo | null>(null);

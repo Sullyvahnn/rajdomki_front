@@ -1,9 +1,9 @@
 // CabinRow.tsx - Beautiful modern UI for each cabin card
-import { Cabin } from '../types';
-import api from '../api/api';
+import { Cabin } from '../../types';
+import api from '../../api/api';
 
 const CabinRow = ({ cabin }: { cabin: Cabin }) => {
-    const isFull = cabin.occupied >= cabin.capacity;
+    const isFull = cabin.occupied_places >= cabin.capacity;
 
     const handleReserve = async () => {
         try {
@@ -22,7 +22,7 @@ const CabinRow = ({ cabin }: { cabin: Cabin }) => {
                         🏡 {cabin.name}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                        Capacity: <span className="font-medium">{cabin.capacity}</span> | Occupied: <span className="font-medium">{cabin.occupied}</span>
+                        Capacity: <span className="font-medium">{cabin.capacity}</span> | Occupied: <span className="font-medium">{cabin.occupied_places}</span>
                     </p>
                 </div>
                 <div>

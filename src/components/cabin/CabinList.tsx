@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import api from '../api/api';
-import { Cabin } from '../types';
+import api from '../../api/api';
+import { Cabin } from '../../types';
 import CabinRow from './CabinRow';
 
 const CabinList = () => {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import SendEmailComponent from './SendEmail';
 import TokenForm from './TokenForm';
 
-const RegisterFlow = () => {
+const LoginFlow = () => {
     const [email, setEmail] = useState('');
     const [emailSent, setEmailSent] = useState(false);
 
@@ -22,4 +22,4 @@ const RegisterFlow = () => {
     );
 };
 
-export default RegisterFlow;
+export default LoginFlow;

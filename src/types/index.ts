@@ -1,18 +1,12 @@
-export interface Cabin {
+export type Cabin = {
     id: number;
     name: string;
     capacity: number;
     occupied_places: number;
-    is_locked: boolean;
-    unlock_time: string | null;
-    members: number[];
-}
+    locked: boolean; // true if reservation is disabled
+    unlock_time?: string; // ISO timestamp (e.g., "2025-07-03T14:00:00Z")
+};
 
-
-export interface GroupInfo {
-    groupCode: string;
-    members: string[];
-}
 
 export interface UserData{
     id: number;
@@ -20,6 +14,8 @@ export interface UserData{
     email: string;
     groupCode: string;
     is_admin: boolean;
+    cabin_id: number;
+
 }
 
 

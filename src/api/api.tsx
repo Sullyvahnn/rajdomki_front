@@ -6,7 +6,10 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(config => {
-  const token = localStorage.getItem('jwt_token');
+  const token = sessionStorage.getItem('jwt_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   if (token) {
     if (!config.headers) config.headers = {} as import('axios').AxiosRequestHeaders;
     (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;

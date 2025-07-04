@@ -12,7 +12,7 @@ const LoginFlow = () => {
     };
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="main-content w-full flex flex-col items-center">
             {!emailSent ? (
                 <SendEmailComponent onSuccess={handleEmailSuccess} email={email} setEmail={setEmail} />
             ) : (

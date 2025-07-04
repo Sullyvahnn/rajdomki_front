@@ -165,31 +165,31 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
 
     return (
         <div
-            className={`relative overflow-hidden rounded-xl shadow-md border p-6 transition-all group 
-            ${isOwnCabin ? 'border-blue-600 ring-2 ring-blue-400' : 'border-gray-200 bg-white hover:shadow-lg'}`}
+            className={`cabin-row relative overflow-hidden rounded-xl shadow-md border p-6 transition-all group 
+            ${isOwnCabin ? 'cabin-own' : 'border-gray-200 bg-white hover:shadow-lg'}`}
         >
-            <div className="flex items-start justify-between">
+            <div className="cabin-card">
                 <div>
-                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                        🏡 {cabin.name}
+                    <h3 className="cabin-title">
+                        Nazwa: {cabin.name}
                         {isOwnCabin && (
                             <span className="ml-2 text-sm px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full">
                                 Your Cabin
                             </span>
                         )}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="cabin-capacity">
                         Capacity: <span className="font-medium">{cabin.capacity}</span> | Occupied:{' '}
                         <span className="font-medium">{cabin.occupied_places}</span>
                     </p>
                     {isLocked && !isOwnCabin && (
-                        <p className="text-sm text-red-500 mt-1 font-semibold">🔒 Locked</p>
+                        <p className="cabin-lock">🔒 Locked</p>
                     )}
                     {timeUntilUnlock && !isOwnCabin && (
-                        <p className="text-sm text-yellow-600 mt-1">⏳ Unlocks in {timeUntilUnlock}</p>
+                        <p className="cabin-unlock">⏳ Unlocks in {timeUntilUnlock}</p>
                     )}
                 </div>
-                <div>
+                <div className='cabin-status'>
                     <span
                         className={`inline-block px-3 py-1 text-xs rounded-full font-semibold
                         ${isFull ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}
@@ -202,40 +202,40 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
             <button
                 onClick={isOwnCabin ? handleLeave : handleReserve}
                 disabled={reserveDisabled}
-                className={`mt-4 w-full py-2 px-4 rounded-md font-semibold text-white transition
+                className={`btn
                     ${
                     isOwnCabin
-                        ? 'bg-red-600 hover:bg-red-700'
+                        ? 'btn-red'
                         : reserveDisabled
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700'
+                            ? 'btn-blue'
+                            : 'w-full'
                 }`}
             >
                 {buttonText}
             </button>
 
             {isAdmin && (
-                <div className="mt-4 space-y-2">
+                <div className="admin-actions">
                     <button
-                        className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded"
+                        className="btn btn-yellow"
                         onClick={handleEdit}
                     >
                         ✏️ Edit Cabin
                     </button>
                     <button
-                        className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded"
+                        className="btn btn-red"
                         onClick={handleDelete}
                     >
                         🗑️ Delete Cabin
                     </button>
                     <button
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded"
+                        className="btn btn-purple"
                         onClick={handleToggleLock}
                     >
                         {cabin.locked ? '🔓 Unlock Cabin' : '🔒 Lock Cabin'}
                     </button>
                     <button
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded"
+                        className="btn btn-indigo"
                         onClick={handleScheduleUnlock}
                     >
                         ⏰ Schedule Unlock

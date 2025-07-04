@@ -85,56 +85,58 @@ const TokenForm = ({ email }: TokenFormProps) => {
     };
 
     return (
-        <form
-            onSubmit={step === 'email_token' ? handleEmailTokenSubmit : handleCreateUserSubmit}
-            className="bg-white p-8 rounded shadow-md flex flex-col gap-4 w-full max-w-md"
-        >
-            <h2 className="text-xl font-semibold mb-4">
-                {step === 'email_token' ? 'Wprowadź token z emaila' : 'Utwórz konto'}
-            </h2>
+        <div className='form-container'>
+            <form
+                onSubmit={step === 'email_token' ? handleEmailTokenSubmit : handleCreateUserSubmit}
+                className="form-wrapper"
+            >
+                <h2 className="form-title">
+                    {step === 'email_token' ? 'Wprowadź token z emaila' : 'Utwórz konto'}
+                </h2>
 
-            {step === 'email_token' && (
-                <input
-                    type="text"
-                    placeholder="Token z emaila"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                    className="border p-2 rounded"
-                    required
-                />
-            )}
-
-            {step === 'create_user' && (
-                <>
-                    <div className="text-sm text-gray-700">
-                        Dla: <strong>{email}</strong>
-                    </div>
+                {step === 'email_token' && (
                     <input
                         type="text"
-                        placeholder="Twoje imię"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="border p-2 rounded"
+                        placeholder="Token z emaila"
+                        value={token}
+                        onChange={(e) => setToken(e.target.value)}
+                        className="form-input"
                         required
                     />
-                </>
-            )}
+                )}
 
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            {success && <div className="text-green-600 text-sm">{success}</div>}
+                {step === 'create_user' && (
+                    <>
+                        <div className="form-label-static">
+                            Dla: <strong>{email}</strong>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Twoje imię"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="form-input"
+                            required
+                        />
+                    </>
+                )}
 
-            <button
-                type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                disabled={loading}
-            >
-                {loading
-                    ? 'Przetwarzanie...'
-                    : step === 'email_token'
-                        ? 'Zatwierdź token'
-                        : 'Utwórz konto'}
-            </button>
-        </form>
+                {error && <div className="form-error">{error}</div>}
+                {success && <div className="text-green-600 text-sm">{success}</div>}
+
+                <button
+                    type="submit"
+                    className="login-button"
+                    disabled={loading}
+                >
+                    {loading
+                        ? 'Przetwarzanie...'
+                        : step === 'email_token'
+                            ? 'Zatwierdź token'
+                            : 'Utwórz konto'}
+                </button>
+            </form>
+        </div>
     );
 };
 

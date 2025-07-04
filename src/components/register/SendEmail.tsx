@@ -29,25 +29,27 @@ const SendEmailComponent = ({ onSuccess, email, setEmail }: SendEmailComponentPr
     };
 
     return (
-        <form onSubmit={handleSend} className="bg-white p-8 rounded shadow-md flex flex-col gap-4 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Rejestracja</h2>
-            <input
-                type="email"
-                placeholder="Adres email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="border p-2 rounded"
-                required
-            />
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            <button
-                type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                disabled={loading}
-            >
-                {loading ? 'Wysyłanie...' : 'Wyślij token na email'}
-            </button>
-        </form>
+        <div className="form-container">
+            <form onSubmit={handleSend} className="form-wrapper">
+                <h2 className="form-title">Rejestracja</h2>
+                <input
+                    type="email"
+                    placeholder="Adres email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className="form-input"
+                    required
+                />
+                {error && <div className="form-error">{error}</div>}
+                <button
+                    type="submit"
+                    className="login-button"
+                    disabled={loading}
+                >
+                    {loading ? 'Wysyłanie...' : 'Wyślij token na email'}
+                </button>
+            </form>
+        </div>
     );
 };
 

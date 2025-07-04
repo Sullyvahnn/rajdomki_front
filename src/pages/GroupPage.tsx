@@ -8,21 +8,21 @@ import { UserData } from '../types';
 import api from "../api/api";
 
 const GroupPage = () => {
-    const { isAuthenticated, loading: authLoading } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [groupMembers, setGroupMembers] = useState<string[]>([]);
     const [error, setError] = useState('');
     const [groupLoading, setGroupLoading] = useState(false);
 
     useEffect(() => {
-        console.log("Auth loading:", authLoading, "Is authenticated:", isAuthenticated);
-    }, [authLoading, isAuthenticated]);
+        console.log("Is authenticated:", isAuthenticated);
+    }, [isAuthenticated]);
 
     useEffect(() => {
-        if (!authLoading && isAuthenticated) {
+        if (isAuthenticated) {
             console.log("Fetching group data...");
             fetchGroup();
         }
-    }, [authLoading, isAuthenticated]);
+    }, [isAuthenticated]);
 
     const fetchGroup = async () => {
         setGroupLoading(true);
@@ -49,8 +49,8 @@ const GroupPage = () => {
             setGroupLoading(false);
         }
     };
-    // Show loading screen while auth state is loading
-    if (authLoading || groupLoading) {
+    // Show loading screen while group state is loading
+    if (groupLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <p className="text-gray-600 text-lg">Loading...</p>

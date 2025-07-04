@@ -5,6 +5,7 @@ import App from './App';
 import './css/wojtek.css'
 import './css/cabin.css'
 import './css/form.css'
+import './css/group.css'
 import {AuthProvider} from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

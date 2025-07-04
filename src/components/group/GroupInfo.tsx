@@ -10,7 +10,7 @@ const GroupInfo: FC<GroupInfoProps> = ({ members }) => {
     }
 
     return (
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="group-info">
             <h4 className="text-lg font-semibold mb-4 text-gray-800">
                 Group Members ({members.length})
             </h4>

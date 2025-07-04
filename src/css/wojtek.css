@@ -16,18 +16,17 @@
 
 /* Pasek nawigacji */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* większy z-index, żeby zawsze na wierzchu */
   background-color: #fff;
   border-bottom: 1px solid #e5e7eb;
-  padding: 1rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding: 1rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
+
 
 .nav-left {
   display: flex;
@@ -96,11 +95,12 @@
 }
 
 
-.navbar {
+/* .navbar {
   position: relative;
-}
+} */
 
-* {
+html, body {
+  height: 100%;
   margin: 0;
 }
 

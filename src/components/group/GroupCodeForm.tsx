@@ -38,7 +38,7 @@ const GroupCodeForm: FC<GroupCodeFormProps> = ({ endpoint, onGroupChange }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow">
+        <form onSubmit={handleSubmit} className="group-form">
             <label htmlFor="groupCode" className="block text-sm font-medium text-gray-700 mb-1">
                 Group Code
             </label>
@@ -51,8 +51,8 @@ const GroupCodeForm: FC<GroupCodeFormProps> = ({ endpoint, onGroupChange }) => {
                 required
             />
 
-            {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
-            {success && <p className="text-green-600 text-sm mb-2">{success}</p>}
+            {error && <p className="form-error">{error}</p>}
+            {success && <p className="form-success">{success}</p>}
 
             <button
                 type="submit"

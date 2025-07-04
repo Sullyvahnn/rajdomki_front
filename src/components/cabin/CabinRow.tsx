@@ -3,6 +3,8 @@ import { Cabin } from '../../types';
 import api from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
@@ -14,36 +16,47 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
     const isAdmin = user?.is_admin;
     const isOwnCabin = user?.cabin_id === cabin.id;
     const isFull = cabin.occupied_places >= cabin.capacity;
-    const isLocked = cabin.locked === true;
+    const isLocked = (cabin.is_locked === true);
 
     const [timeUntilUnlock, setTimeUntilUnlock] = useState<string | null>(null);
+    const [showSchedule, setShowSchedule] = useState(false);
+    const [scheduleDate, setScheduleDate] = useState(() => {
+        // Set default to today, time 12:00
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}T12:00`;
+    });
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!cabin.unlock_time) {
+    if (!cabin.unlock_time) {
+        setTimeUntilUnlock(null);
+        return;
+    }
+
+    const updateCountdown = () => {
+        const unlockMoment = dayjs.utc(cabin.unlock_time);
+        const now = dayjs.utc(); // <---- TO JEST KRYTYCZNE
+        const diff = unlockMoment.diff(now);
+
+        if (diff <= 0) {
             setTimeUntilUnlock(null);
-            return;
+        } else {
+            setTimeUntilUnlock(unlockMoment.fromNow(true));
         }
+    };
 
-        const updateCountdown = () => {
-            const unlockMoment = dayjs(cabin.unlock_time);
-            const now = dayjs();
-            const diff = unlockMoment.diff(now);
-
-            if (diff <= 0) {
-                setTimeUntilUnlock(null);
-            } else {
-                setTimeUntilUnlock(unlockMoment.fromNow(true));
-            }
-        };
-
-        updateCountdown();
-        const interval = setInterval(updateCountdown, 1000);
-        return () => clearInterval(interval);
-    }, [cabin.unlock_time]);
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    onChange?.();
+    return () => clearInterval(interval);
+}, [cabin.unlock_time]);
 
     const handleReserve = async () => {
         if (!isAuthenticated || !token) {
-            alert('You must be logged in to reserve a cabin.');
+            setErrorMsg('You must be logged in to reserve a cabin.');
             return;
         }
 
@@ -62,7 +75,7 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
             onChange?.();
         } catch (err: any) {
             const error = err.response?.data?.error || 'Reservation failed.';
-            alert(`❌ ${error}`);
+            setErrorMsg(`❌ ${error}`);
         }
     };
 
@@ -109,6 +122,7 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
     const handleToggleLock = async () => {
         if (!token) return;
         try {
+            console.log(cabin.is_locked)
             await api.post(
                 `/admin/unlock/${cabin.id}`,
                 {},
@@ -121,14 +135,17 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
     };
 
     const handleScheduleUnlock = async () => {
-        const isoTime = prompt('Enter unlock time (YYYY-MM-DDTHH:mm:ss)');
-        if (!isoTime || !token) return;
+        if (!scheduleDate || !token) return;
         try {
+            // Zamień lokalny czas na UTC ISO string
+            const unlockISO = new Date(scheduleDate).toISOString();
             await api.post(
                 `/admin/schedule-unlock/${cabin.id}`,
-                { unlock_time: isoTime },
+                { unlock_time: unlockISO },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+            setShowSchedule(false);
+            setScheduleDate('');
             onChange?.();
         } catch (err: any) {
             alert(err.response?.data?.error || 'Failed to schedule unlock.');
@@ -168,31 +185,31 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
             className={`cabin-row relative overflow-hidden rounded-xl shadow-md border p-6 transition-all group 
             ${isOwnCabin ? 'cabin-own' : 'border-gray-200 bg-white hover:shadow-lg'}`}
         >
-            <div className="cabin-card">
+            <div className={`cabin-card${isOwnCabin ? ' your-cabin' : ''}${isFull ? ' cabin-disabled' : ''}`}>
                 <div>
                     <h3 className="cabin-title">
                         Nazwa: {cabin.name}
                         {isOwnCabin && (
                             <span className="ml-2 text-sm px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full">
-                                Your Cabin
+                               
                             </span>
                         )}
                     </h3>
                     <p className="cabin-capacity">
                         Capacity: <span className="font-medium">{cabin.capacity}</span> | Occupied:{' '}
                         <span className="font-medium">{cabin.occupied_places}</span>
-                    </p>
-                    {isLocked && !isOwnCabin && (
+                    </p><p>ss</p>
+                    {isLocked&& (
                         <p className="cabin-lock">🔒 Locked</p>
                     )}
                     {timeUntilUnlock && !isOwnCabin && (
                         <p className="cabin-unlock">⏳ Unlocks in {timeUntilUnlock}</p>
                     )}
                 </div>
-                <div className='cabin-status'>
+                <div className={`cabin-status`}>
                     <span
                         className={`inline-block px-3 py-1 text-xs rounded-full font-semibold
-                        ${isFull ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}
+                        ${isFull ? 'cabin-disabled' : 'bg-green-100 text-green-600'}`}
                     >
                         {isFull ? 'Full' : 'Available'}
                     </span>
@@ -232,14 +249,38 @@ const CabinRow = ({ cabin, onChange }: { cabin: Cabin; onChange?: () => void }) 
                         className="btn btn-purple"
                         onClick={handleToggleLock}
                     >
-                        {cabin.locked ? '🔓 Unlock Cabin' : '🔒 Lock Cabin'}
+                        {cabin.is_locked ? '🔓 Unlock Cabin' : '🔒 Lock Cabin'}
                     </button>
                     <button
                         className="btn btn-indigo"
-                        onClick={handleScheduleUnlock}
+                        onClick={() => setShowSchedule((v) => !v)}
                     >
                         ⏰ Schedule Unlock
                     </button>
+                    {showSchedule && (
+                        <div className="mt-2 flex gap-2 items-center">
+                            <input
+                                type="datetime-local"
+                                value={scheduleDate}
+                                onChange={e => setScheduleDate(e.target.value)}
+                                className="border p-1 rounded"
+                            />
+                            <button
+                                className="btn btn-green"
+                                onClick={handleScheduleUnlock}
+                                type="button"
+                            >
+                                Zatwierdź
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Dymek z błędem */}
+            {errorMsg && (
+                <div className="error-msg" onAnimationEnd={() => setErrorMsg(null)}>
+                    {errorMsg}
                 </div>
             )}
         </div>

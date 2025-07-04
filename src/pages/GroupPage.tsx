@@ -85,26 +85,28 @@ const GroupPage = () => {
             <Navbar />
             <main className="main-content">
                 <BigLogo />
-                <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+                <h2 className="centered-heading text-3xl font-semibold text-gray-800 mb-8 text-center">
                     Group Information
                 </h2>
 
                 {error && <p className="text-red-600 mb-4">{error}</p>}
-
-                {groupMembers.length > 0 ? (
-                    <div className="mb-8">
-                        <GroupInfo members={groupMembers} />
+                <div  className="group-section-wrapper mb-12">
+                    <div className='group-box'>
+                        {groupMembers.length > 0 ? (
+                            <div className="mb-8">
+                                <GroupInfo members={groupMembers} />
+                            </div>
+                        ) : (
+                            <p className="text-gray-600 mb-8">You are not part of any group yet.</p>
+                        )}
                     </div>
-                ) : (
-                    <p className="text-gray-600 mb-8">You are not part of any group yet.</p>
-                )}
-
-                <div>
-                    <h3 className="text-xl font-semibold mb-2">Change your group code</h3>
-                    <GroupCodeForm
-                        endpoint="/user/change-code"
-                        onGroupChange={fetchGroup}
-                    />
+                    <div className='group-box'>
+                        <h3 className="text-xl font-semibold mb-2">Change your group code</h3>
+                        <GroupCodeForm
+                            endpoint="/user/change-code"
+                            onGroupChange={fetchGroup}
+                        />
+                    </div>
                 </div>
             </main>
             <Footer />

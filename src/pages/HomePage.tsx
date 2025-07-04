@@ -10,7 +10,7 @@ const HomePage = () => {
             <main className="main-content">
 
                 <BigLogo />
-                <h2>Available Cabins</h2>
+                <h2>Cabins: </h2>
                 <CabinList />
             </main>
             <Footer />

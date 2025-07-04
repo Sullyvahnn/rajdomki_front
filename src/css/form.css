@@ -1,0 +1,61 @@
+/* Styl formularza rejestracyjnego */
+.form-wrapper {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem; /* odpowiada Tailwind rounded-xl */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb; /* gray-200 */
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937; /* gray-800 */
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #374151; /* gray-700 */
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #2563eb; /* blue-600 */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.form-error {
+  color: #dc2626; /* red-600 */
+  font-size: 0.875rem;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.form-label-static {
+  font-size: 0.95rem;
+  color: #4b5563; /* gray-600 */
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.form-label-static strong {
+  color: #1f2937; /* gray-800 */
+  font-weight: 600;
+}

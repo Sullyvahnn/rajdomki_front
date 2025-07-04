@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Cabin } from '../../types';
 import api from '../../api/api';
+import { Cabin } from '../../types';
 import CabinRow from './CabinRow';
 import { useAuth } from '../../context/AuthContext';
 
@@ -59,7 +59,7 @@ const CabinList = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="cabin-grid">
                 {cabins.map((cabin) => (
                     <CabinRow
                         key={`cabin-${cabin.id}-${user?.cabin_id ?? 'none'}`}

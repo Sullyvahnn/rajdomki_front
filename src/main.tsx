@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';
+// import './index.css';
+import './css/wojtek.css'
+import './css/cabin.css'
+import './css/form.css'
+import './css/group.css'
 import {AuthProvider} from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

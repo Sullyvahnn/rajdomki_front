@@ -3,7 +3,7 @@ export type Cabin = {
     name: string;
     capacity: number;
     occupied_places: number;
-    locked: boolean; // true if reservation is disabled
+    is_locked: boolean; // true if reservation is disabled
     unlock_time?: string; // ISO timestamp (e.g., "2025-07-03T14:00:00Z")
 };
 
